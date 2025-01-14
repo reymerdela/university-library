@@ -9,6 +9,11 @@ import {
 import config from "@/lib/config";
 import { Button } from "./ui/button";
 import Image from "next/image";
+import { useToast } from "@/hooks/use-toast";
+import {
+  IKUploadResponse,
+  UploadError,
+} from "imagekitio-next/dist/types/components/IKUpload/props";
 
 const {
   env: {
@@ -35,12 +40,34 @@ const authenticator = async () => {
   }
 };
 
-const ImageUpload = () => {
+const ImageUpload = ({
+  onFileChange,
+}: {
+  onFileChange: (filePath: string) => void;
+}) => {
   const ikUploadRef = useRef<HTMLInputElement>(null);
-  const [file, setFile] = useState<{ filepath: string } | null>(null);
+  const [file, setFile] = useState<{ filePath: string } | null>(null);
+  const { toast } = useToast();
 
-  const onError = () => {};
-  const onSuccess = () => {};
+  const onError = (error: UploadError) => {
+    console.log(error);
+
+    toast({
+      title: "Image upload failed",
+      description: `Your image could not be uploaded. Please try again.`,
+      variant: "destructive",
+    });
+  };
+  const onSuccess = (response: IKUploadResponse) => {
+    setFile(response);
+    console.log(response);
+
+    onFileChange(response.filePath);
+    toast({
+      title: "Image uploaded successfully",
+      description: `${response.filePath} uploaded successfully`,
+    });
+  };
 
   return (
     <ImageKitProvider
@@ -54,14 +81,14 @@ const ImageUpload = () => {
         onError={onError}
         onSuccess={onSuccess}
         fileName="test-upload.png"
-        required
       />
       <button
-        className="upload-btn"
+        className="upload-btn bg-dark-300"
         onClick={(e) => {
           e.preventDefault();
 
           if (ikUploadRef.current) {
+            console.log("clicking");
             ikUploadRef.current.click();
           }
         }}
@@ -74,12 +101,12 @@ const ImageUpload = () => {
           className="object-contain"
         />
         <p className="text-base text-light-100">Upload a File</p>
-        {file && <p className="upload-filename">{file.filepath}</p>}
+        {file && <p className="upload-filename">{file.filePath}</p>}
       </button>
       {file && (
         <IKImage
-          alt={file.filepath}
-          path={file.filepath}
+          alt={file.filePath}
+          path={file.filePath}
           width={500}
           height={500}
         />
