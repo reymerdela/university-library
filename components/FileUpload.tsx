@@ -141,7 +141,6 @@ const FileUpload = ({
           e.preventDefault();
 
           if (ikUploadRef.current) {
-            console.log("clicking");
             ikUploadRef.current.click();
           }
         }}
@@ -162,7 +161,7 @@ const FileUpload = ({
 
       {progress > 0 && progress != 100 && (
         <div className="w-full rounded-full bg-green-200">
-          <div className="progress" style={{ width: `${progress}` }}>
+          <div className="progress" style={{ width: `${progress}%` }}>
             {progress}%
           </div>
         </div>
