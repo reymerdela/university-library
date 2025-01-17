@@ -48,6 +48,7 @@ interface Props {
   placeholder: string;
   variant: "dark" | "light";
   folder: string;
+  value?: string;
 }
 
 const FileUpload = ({
@@ -57,9 +58,12 @@ const FileUpload = ({
   placeholder,
   type,
   variant,
+  value,
 }: Props) => {
   const ikUploadRef = useRef<HTMLInputElement>(null);
-  const [file, setFile] = useState<{ filePath: string } | null>(null);
+  const [file, setFile] = useState<{ filePath: string | null }>({
+    filePath: value ?? null,
+  });
   const { toast } = useToast();
   const [progress, setProgress] = useState(0);
 
@@ -168,6 +172,7 @@ const FileUpload = ({
       )}
 
       {file &&
+        file.filePath &&
         (type == "image" ? (
           <IKImage
             alt={file.filePath}
