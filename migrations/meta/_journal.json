@@ -8,6 +8,20 @@
       "when": 1736893014596,
       "tag": "0000_talented_james_howlett",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1737133671432,
+      "tag": "0001_bitter_abomination",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1737133961905,
+      "tag": "0002_outgoing_firelord",
+      "breakpoints": true
     }
   ]
 }
